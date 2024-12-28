@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: V1.0.0_init.sql
+      relativeToChangelogFile: true
+
