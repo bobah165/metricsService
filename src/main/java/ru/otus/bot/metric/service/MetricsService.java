@@ -22,8 +22,8 @@ public class MetricsService {
 
 
     @Transactional
-    public void save(Metrics metrics) {
-        metricsRepository.save(processMetrics(metrics));
+    public Metrics save(Metrics metrics) {
+        return metricsRepository.save(processMetrics(metrics));
     }
 
     @Transactional(readOnly = true)

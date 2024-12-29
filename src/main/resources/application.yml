@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8002
 
 spring:
   datasource:
@@ -10,60 +10,38 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: "bot-1"
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
 
-bot:
-  telegram-api: https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s
-  token: 2070228409:AAH5sOZ_tbstAwYTIVSoxjI8z26UtL639DA
-car:
-  param:
-    maintenance:
-      schedule: 10
-      total: 200
-      reminder: 5
-  api:
-    baseurl: /api/car
-    sub-path:
-      id: /api/car/{id}
-      all: /api/car
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: 1
+        spring:
+          json:
+            add:
+              type:
+                headers: false
 
-bot-state:
-  api:
-    baseurl: /api/botState
-    sub-path:
-      id: /api/botState/{id}
-      all: /api/botState
-
-costs:
-  api:
-    baseurl: /api/costs
-    sub-path:
-      id: /api/costs/{id}
-      all: /api/costs
+topic:
+  consumer :
+    telegram: send-telegram-to-metric-event
+    car:  send-delivery-to-pay-event
 
 metrics:
   api:
     baseurl: /api/metrics
     sub-path:
       metric-type: /api/metrics/{id}/{metricType}
-
-language:
-  api:
-    baseurl: /api/local
-
-car-maintenance:
-  api:
-    baseurl: /api/maintenance
-    sub-path:
-      id: /api/maintenance/{id}
-
-
-mongock:
-  runner-type: InitializingBean
-  change-logs-scan-package:
-    - ru.otus.mycar.handler.config
-
-schedule:
-  delay:
-    init: 0
-    fixed: 10000
 
