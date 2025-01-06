@@ -27,9 +27,7 @@ ingress:
   className: nginx
   host: "arch.homework"
   pathType: Prefix
-  path:
-    pay: /api/metric
-    account: /api/metric
+  path: /
 
 db:
   url: jdbc:postgresql://my-db-postgresql:5432/postgres

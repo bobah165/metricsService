@@ -8,14 +8,7 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: {{ .Values.ingress.path.pay }}
-            pathType: {{ .Values.ingress.pathType }}
-            backend:
-              service:
-                name: {{ .Values.service.nameApp }}
-                port:
-                  number: {{ .Values.service.port }}
-          - path: {{ .Values.ingress.path.account }}
+          - path: {{ .Values.ingress.path }}
             pathType: {{ .Values.ingress.pathType }}
             backend:
               service:
