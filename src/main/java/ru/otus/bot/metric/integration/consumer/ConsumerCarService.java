@@ -1,6 +1,5 @@
 package ru.otus.bot.metric.integration.consumer;
 
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.bot.metric.data.Car;
 import ru.otus.bot.metric.data.MetricType;
-import ru.otus.bot.metric.repository.model.Metrics;
+import ru.otus.bot.metric.data.MetricsDto;
 import ru.otus.bot.metric.service.MetricsService;
 
 @Slf4j
@@ -22,12 +21,8 @@ public class ConsumerCarService {
 
   @Transactional
   @KafkaListener(topics = topicTelegram, groupId = kafkaConsumerGroupId, properties = {"spring.json.value.default.type=ru.otus.bot.metric.data.Car"})
-  public Metrics createMetric(Car car) {
+  public void createMetric(Car car) {
     log.info("Car message consumed {}", car);
-
-    return metricsService.save(new Metrics().setMetricType(MetricType.MILEAGE)
-        .setDate(LocalDate.now())
-        .setValue(String.valueOf(car.getMileage()))
-        .setUserId(car.getId()));
+    metricsService.updateMileage(car.getChatId(), MetricType.MILEAGE, car.getMileage());
   }
 }

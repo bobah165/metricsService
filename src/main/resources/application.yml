@@ -4,14 +4,14 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   liquibase:
     enabled: true
     change-log: classpath:changelog/db.changelog-master.yaml
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
     consumer:
       group-id: "bot-1"
       auto-offset-reset: earliest
@@ -37,7 +37,7 @@ spring:
 topic:
   consumer :
     telegram: send-telegram-to-metric-event
-    car:  send-delivery-to-pay-event
+    car:  send-car-created-event
 
 metrics:
   api:

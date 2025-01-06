@@ -1,5 +1,6 @@
 package ru.otus.bot.metric.integration.consumer;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -20,7 +21,7 @@ public class ConsumerTelegramService {
   @Transactional
   @KafkaListener(topics = topicTelegram, groupId = kafkaConsumerGroupId, properties = {"spring.json.value.default.type=ru.otus.bot.metric.repository.model.Metrics"})
   public Metrics createMetric(Metrics metrics) {
-    log.info("Metrics message consumed {}", metrics);
+    log.info("Telegram Metrics message consumed {}", metrics);
     metricsService.save(metrics);
     return metrics;
   }

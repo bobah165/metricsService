@@ -26,13 +26,29 @@ public class MetricsService {
         return metricsRepository.save(processMetrics(metrics));
     }
 
+    @Transactional
+    public void updateMileage(String userId, MetricType metricType, Integer newValue) {
+        Optional.ofNullable(metricsRepository.findByUserIdAndMetricType(userId, metricType))
+          .ifPresentOrElse(currentMetric -> {
+                var currentValue = Integer.parseInt(currentMetric.getValue());
+                var newMileage = newValue + currentValue;
+                currentMetric.setValue(String.valueOf(newMileage));
+                save(currentMetric);
+            }, () -> new Metrics().setValue("0")
+                                   .setDate(LocalDate.now())
+                                   .setId(userId)
+                                   .setMetricType(metricType)
+          );
+    }
+
+
     @Transactional(readOnly = true)
     public MetricsDto findByIdAndMetricType(String userId, MetricType metricType) {
         Metrics metrics = Optional.ofNullable(metricsRepository.findByUserIdAndMetricType(userId, metricType))
-                                  .orElse(new Metrics().setValue("0")
-                                                       .setDate(LocalDate.now())
-                                                       .setId(userId)
-                                                       .setMetricType(metricType));
+          .orElse(new Metrics().setValue("0")
+            .setDate(LocalDate.now())
+            .setId(userId)
+            .setMetricType(metricType));
         return metricsMapper.convertFromMetricsToMetricsDto(metrics);
     }
 

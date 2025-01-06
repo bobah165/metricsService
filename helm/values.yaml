@@ -1,0 +1,43 @@
+replicas:
+  _default: 1
+  dev: 1
+
+selector : dev
+
+name:
+  app: metric-helm
+
+service:
+  nameApp: metric-helm-service
+  portName: helm-metric
+  type: NodePort
+  port: 80
+  targetPort: 8002
+
+kafka:
+  bootstrap: kafka:9092
+
+image:
+  repository: bobah165/metricservice
+  tag: v6
+
+ingress:
+  enabled: false
+  name: "metric-service-helm-ingress"
+  className: nginx
+  host: "arch.homework"
+  pathType: Prefix
+  path:
+    pay: /api/metric
+    account: /api/metric
+
+db:
+  url: jdbc:postgresql://my-db-postgresql:5432/postgres
+
+app:
+  db:
+    password:
+      _default: cG9zdGdyZXM=
+    username:
+      _default: cG9zdGdyZXM=
+
