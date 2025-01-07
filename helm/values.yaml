@@ -25,7 +25,7 @@ ingress:
   enabled: false
   name: "metric-service-helm-ingress"
   className: nginx
-  host: "arch.homework"
+  host: "arch.homework.metric"
   pathType: Prefix
   path: /
 
